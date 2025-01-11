@@ -61,71 +61,71 @@ const API_KEY = '';
  */
 //Hint
 
-Carousel.createCarouselItem();
-async function loadBreedInfo(breedId) {
-  try {
-    // Fetch data from the API
-    const res = await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}&limit=5`);
-    const data = await res.json();
+// Carousel.createCarouselItem();
+// async function loadBreedInfo(breedId) {
+//   try {
+//     // Fetch data from the API
+//     const res = await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}&limit=5`);
+//     const data = await res.json();
 
-    // Clear existing carousel and infoDump content
-    carousel.innerHTML = '';
-    infoDump.innerHTML = '';
+//     // Clear existing carousel and infoDump content
+//     carousel.innerHTML = '';
+//     infoDump.innerHTML = '';
 
-    // Populate carousel with new images
-    for (const item of data) {
-      // Create a new carousel item using the hint
-      const carouselItem = Carousel.createCarouselItem({
-        imgSrc: item.url,
-        altText: `Image of ${item.breeds[0].name}`,
-      });
+//     // Populate carousel with new images
+//     for (const item of data) {
+//       // Create a new carousel item using the hint
+//       const carouselItem = Carousel.createCarouselItem({
+//         imgSrc: item.url,
+//         altText: `Image of ${item.breeds[0].name}`,
+//       });
 
-      // Append the carousel item to the carousel container
-      carousel.appendChild(carouselItem);
-    }
+//       // Append the carousel item to the carousel container
+//       carousel.appendChild(carouselItem);
+//     }
 
-    // Populate infoDump with breed details
-    if (data.length > 0) {
-      const breedInfo = data[0].breeds[0];
-      const title = document.createElement('h2');
-      title.textContent = breedInfo.name;
+//     // Populate infoDump with breed details
+//     if (data.length > 0) {
+//       const breedInfo = data[0].breeds[0];
+//       const title = document.createElement('h2');
+//       title.textContent = breedInfo.name;
 
-      const description = document.createElement('p');
-      description.textContent = breedInfo.description;
+//       const description = document.createElement('p');
+//       description.textContent = breedInfo.description;
 
-      const temperament = document.createElement('p');
-      temperament.innerHTML = `<strong>Temperament:</strong> ${breedInfo.temperament}`;
+//       const temperament = document.createElement('p');
+//       temperament.innerHTML = `<strong>Temperament:</strong> ${breedInfo.temperament}`;
 
-      const origin = document.createElement('p');
-      origin.innerHTML = `<strong>Origin:</strong> ${breedInfo.origin}`;
+//       const origin = document.createElement('p');
+//       origin.innerHTML = `<strong>Origin:</strong> ${breedInfo.origin}`;
 
-      infoDump.appendChild(title);
-      infoDump.appendChild(description);
-      infoDump.appendChild(temperament);
-      infoDump.appendChild(origin);
-    }
+//       infoDump.appendChild(title);
+//       infoDump.appendChild(description);
+//       infoDump.appendChild(temperament);
+//       infoDump.appendChild(origin);
+//     }
 
-    // Restart or initialize carousel logic
-    restartCarousel();
+//     // Restart or initialize carousel logic
+//     restartCarousel();
 
-  } catch (err) {
-    console.error('Error loading breed info:', err);
-  }
-}
+//   } catch (err) {
+//     console.error('Error loading breed info:', err);
+//   }
+// }
 
-// Event listener for breed selection
-breedSelect.addEventListener('change', (e) => {
-  const selectedBreedId = e.target.value;
-  if (selectedBreedId) {
-    loadBreedInfo(selectedBreedId);
-  }
-});
+// // Event listener for breed selection
+// breedSelect.addEventListener('change', (e) => {
+//   const selectedBreedId = e.target.value;
+//   if (selectedBreedId) {
+//     loadBreedInfo(selectedBreedId);
+//   }
+// });
 
-// Function to restart carousel (placeholder logic)
-function restartCarousel() {
-  // Implement your carousel restart logic here
-  console.log('Carousel restarted');
-}
+// // Function to restart carousel (placeholder logic)
+// function restartCarousel() {
+//   // Implement your carousel restart logic here
+//   console.log('Carousel restarted');
+// }
 
 // // Call the breed info loader initially
 // initialLoad().then(() => {
@@ -155,26 +155,26 @@ function restartCarousel() {
  *   send it manually with all of your requests! You can also set a default base URL!
  */
 
-// async function initialLoad() {
-//     try {
-//       // Using axios to fetch data
-//       const res = await axios.get('https://api.thecatapi.com/v1/breeds');
-//       const data = res.data;
-//       console.log(data);
+async function initialLoad() {
+    try {
+      // Using axios to fetch data
+      const res = await axios.get('https://api.thecatapi.com/v1/breeds');
+      const data = res.data;
+      console.log(data);
   
-//       // Create option tags
-//       for (const breed of data) {
-//         const option = document.createElement('option');
-//         option.setAttribute('value', breed.id);
-//         option.textContent = breed.name;
-//         breedSelect.append(option);
-//       }
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   }
+      // Create option tags
+      for (const breed of data) {
+        const option = document.createElement('option');
+        option.setAttribute('value', breed.id);
+        option.textContent = breed.name;
+        breedSelect.append(option);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
   
-//   initialLoad();
+  initialLoad();
 /**
  * 5. Add axios interceptors to log the time between request and response to the console.
  * - Hint: you already have access to code that does this!
