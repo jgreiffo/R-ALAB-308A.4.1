@@ -221,11 +221,115 @@ axios.interceptors.response.use(
  *   with for future projects.
  */
 
+
+// Function to update the progress bar width
+function updateProgress(event) {
+  console.log(event); // Log the ProgressEvent object to familiarize yourself with its structure
+
+  if (event.lengthComputable) {
+    const percentComplete = (event.loaded / event.total) * 100;
+    progressBar.style.width = `${percentComplete}%`;
+  }
+}
+
+// Event handler to load breed info with progress bar
+async function loadBreedInfoWithProgress(breedId) {
+  try {
+    // Reset the progress bar width
+    progressBar.style.width = '0%';
+
+    // Fetch data from the API with progress tracking
+    const res = await axios.get(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}&limit=5`, {
+      onDownloadProgress: updateProgress, // Pass the updateProgress function here
+    });
+
+    const data = res.data;
+
+    // Clear existing carousel and infoDump content
+    carousel.innerHTML = '';
+    infoDump.innerHTML = '';
+
+    // Populate carousel with new images
+    for (const item of data) {
+      const carouselItem = Carousel.createCarouselItem({
+        imgSrc: item.url,
+        altText: `Image of ${item.breeds[0].name}`,
+      });
+      carousel.appendChild(carouselItem);
+    }
+
+    // Populate infoDump with breed details
+    if (data.length > 0) {
+      const breedInfo = data[0].breeds[0];
+      const title = document.createElement('h2');
+      title.textContent = breedInfo.name;
+
+      const description = document.createElement('p');
+      description.textContent = breedInfo.description;
+
+      const temperament = document.createElement('p');
+      temperament.innerHTML = `<strong>Temperament:</strong> ${breedInfo.temperament}`;
+
+      const origin = document.createElement('p');
+      origin.innerHTML = `<strong>Origin:</strong> ${breedInfo.origin}`;
+
+      infoDump.appendChild(title);
+      infoDump.appendChild(description);
+      infoDump.appendChild(temperament);
+      infoDump.appendChild(origin);
+    }
+
+    // Restart or initialize carousel logic
+    restartCarousel();
+  } catch (err) {
+    console.error('Error loading breed info:', err);
+  }
+}
+
+// Event listener for breed selection
+breedSelect.addEventListener('change', (e) => {
+  const selectedBreedId = e.target.value;
+  if (selectedBreedId) {
+    loadBreedInfoWithProgress(selectedBreedId);
+  }
+});
+
+// Call the breed info loader initially
+initialLoad().then(() => {
+  if (breedSelect.value) {
+    loadBreedInfoWithProgress(breedSelect.value);
+  }
+});
+
+
 /**
  * 7. As a final element of progress indication, add the following to your axios interceptors:
  * - In your request interceptor, set the body element's cursor style to "progress."
  * - In your response interceptor, remove the progress cursor style from the body element.
  */
+
+// Axios request interceptor
+axios.interceptors.request.use((config) => {
+    //  cursor style to "progress"
+    document.body.style.cursor = 'progress';
+    return config;
+  }, (error) => {
+    
+    document.body.style.cursor = '';
+    return Promise.reject(error);
+  });
+  
+  // Axios response interceptor
+  axios.interceptors.response.use((response) => {
+    // Reset the cursor style
+    document.body.style.cursor = '';
+    return response;
+  }, (error) => {
+    // Ensure the cursor resets in case of an error
+    document.body.style.cursor = '';
+    return Promise.reject(error);
+  });
+  
 /**
  * 8. To practice posting data, we'll create a system to "favourite" certain images.
  * - The skeleton of this function has already been created for you.

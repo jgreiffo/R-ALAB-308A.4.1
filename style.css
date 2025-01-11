@@ -77,3 +77,16 @@ body {
     height: 17em;
   }
 }
+#progressBarContainer {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#progressBar {
+  width: 0;
+  height: 10px;
+  background-color: #4caf50;
+  transition: width 0.3s ease;
+}
