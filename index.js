@@ -29,25 +29,25 @@ const API_KEY = '';
  * This function should execute immediately.
  */
 
-async function initialLoad() {
-  try {
-    const res = await fetch('https://api.thecatapi.com/v1/breeds');
-    const data = await res.json();
-    console.log(data);
+// async function initialLoad() {
+//   try {
+//     const res = await fetch('https://api.thecatapi.com/v1/breeds');
+//     const data = await res.json();
+//     console.log(data);
 
-    // Create option tags
-    for (const breed of data) {
-      const option = document.createElement('option');
-      option.setAttribute('value', breed.id);
-      option.textContent = breed.name;
-      breedSelect.append(option);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
+//     // Create option tags
+//     for (const breed of data) {
+//       const option = document.createElement('option');
+//       option.setAttribute('value', breed.id);
+//       option.textContent = breed.name;
+//       breedSelect.append(option);
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
-initialLoad();
+// initialLoad();
 
 /**
  * 2. Create an event handler for breedSelect that does the following:
@@ -70,10 +70,13 @@ initialLoad();
 
 // At the point, you need to push your code up to your OWN github repo
 // go to the folder you cloned in today, and clone your repo  again and give it the name below
+// https://github.com/jgreiffo/R-ALAB-308A.4.1.git
 
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
  */
+
+// https://github.com/jgreiffo/R-ALAB-308A.4.1.git
 /**
  * 4. Change all of your fetch() functions to axios!
  * - axios has already been imported for you within index.js.
@@ -83,6 +86,27 @@ initialLoad();
  *   by setting a default header with your API key so that you do not have to
  *   send it manually with all of your requests! You can also set a default base URL!
  */
+
+async function initialLoad() {
+    try {
+      // Using axios to fetch data
+      const res = await axios.get('https://api.thecatapi.com/v1/breeds');
+      const data = res.data;
+      console.log(data);
+  
+      // Create option tags
+      for (const breed of data) {
+        const option = document.createElement('option');
+        option.setAttribute('value', breed.id);
+        option.textContent = breed.name;
+        breedSelect.append(option);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  
+  initialLoad();
 /**
  * 5. Add axios interceptors to log the time between request and response to the console.
  * - Hint: you already have access to code that does this!
